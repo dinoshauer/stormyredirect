@@ -24,6 +24,7 @@ class StormyGeneratorHandler(tornado.web.RequestHandler):
 	def post(self):
 		digestive = self._randomString()
 		key = '%s/%s' % (self.request.host, digestive)
+		r.set(key, self.get_argument('target'))
 
 	def _randomString(self, size=6, chars=string.ascii_lowercase + string.ascii_uppercase + string.digits):
 		return ''.join(random.choice(chars) for x in xrange(size))
@@ -34,5 +35,6 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-	application.listen(8888)
+	import sys
+	application.listen(sys.argv[1])
 	tornado.ioloop.IOLoop.instance().start()
